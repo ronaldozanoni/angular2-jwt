@@ -4,7 +4,7 @@
   "description": "Helper library for handling JWTs in Angular 5",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/auth0/angular2-jwt.git"
+    "url": "git+https://github.com/ronaldozanoni/angular2-jwt.git"
   },
   "scripts": {
     "dev": "tsc --watch",
@@ -18,7 +18,7 @@
     "jwt",
     "authentication"
   ],
-  "author": "ryanchenkie",
+  "author": "ronaldozanoni",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/ronaldozanoni/angular2-jwt/issues"
