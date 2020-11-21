@@ -1,5 +1,5 @@
 {
-  "name": "angular2-jwt-0.2.5",
+  "name": "ago-angular2-jwt",
   "version": "0.2.5",
   "description": "Helper library for handling JWTs in Angular 5",
   "repository": {
