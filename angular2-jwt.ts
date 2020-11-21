@@ -22,6 +22,7 @@ export interface IAuthConfig {
   noClientCheck: boolean;
   noTokenScheme?: boolean;
   tokenGetter: () => string | Promise<string>;
+  responseErrorCallback?: (request: Request, error: any) => void;
   tokenName: string;
 }
 
@@ -30,6 +31,7 @@ export interface IAuthConfigOptional {
     headerPrefix?: string;
     tokenName?: string;
     tokenGetter?: () => string | Promise<string>;
+    responseErrorCallback?: (request: Request, error: any) => void;
     noJwtError?: boolean;
     noClientCheck?: boolean;
     globalHeaders?: Array<Object>;
@@ -47,6 +49,7 @@ const AuthConfigDefaults: IAuthConfig = {
     headerPrefix: null,
     tokenName: AuthConfigConsts.DEFAULT_TOKEN_NAME,
     tokenGetter: () => localStorage.getItem(AuthConfigDefaults.tokenName) as string,
+    responseErrorCallback: null,
     noJwtError: false,
     noClientCheck: false,
     globalHeaders: [],
@@ -134,7 +137,16 @@ export class AuthHttp {
       req.headers.set(this.config.headerName, this.config.headerPrefix + token);
     }
 
-    return this.http.request(req);
+    return this.http.request(req)
+      .catch((error: any, caught: Observable<Response>) => {
+        if (this.config.responseErrorCallback) {
+          this.config.responseErrorCallback(req, error);
+        }
+
+        return new Observable<Response>((obs: any) => {
+          obs.error(caught);
+        });
+      });
   }
 
   public setGlobalHeaders(headers: Array<Object>, request: Request | RequestOptionsArgs) {
@@ -338,7 +350,7 @@ function toObject(val: any) {
   if (val === null || val === undefined) {
     throw new TypeError('Object.assign cannot be called with null or undefined');
   }
-  
+
   return Object(val);
 }
 
@@ -346,16 +358,16 @@ function objectAssign(target: any, ...source: any[]) {
   let from: any;
   let to = toObject(target);
   let symbols: any;
-  
+
   for (var s = 0; s < source.length; s++) {
     from = Object(source[s]);
-    
+
     for (var key in from) {
       if (hasOwnProperty.call(from, key)) {
         to[key] = from[key];
       }
     }
-    
+
     if ((<any>Object).getOwnPropertySymbols) {
       symbols = (<any>Object).getOwnPropertySymbols(from);
       for (var i = 0; i < symbols.length; i++) {
