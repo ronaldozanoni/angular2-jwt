@@ -26,7 +26,7 @@
   "main": "angular2-jwt.js",
   "typings": "./angular2-jwt.d.ts",
   "types": "./angular2-jwt.d.ts",
-  "homepage": "https://github.com/ronaldozanoni/angular2-jwt#readme",
+  "homepage": "https://github.com/ronaldozanoni/angular2-jwt/tree/0.2.5/#readme",
   "devDependencies": {
     "@angular/common": "^2.4.2||^4.0.0",
     "@angular/compiler": "^2.4.2||^4.0.0",
